@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F43F5E"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="96" cy="96" r="96" fill="url(#bg)"/>
+  <!-- Inner ring (globe suggestion) -->
+  <circle cx="96" cy="96" r="72" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="none"/>
+  <!-- Globe meridian curves -->
+  <ellipse cx="96" cy="96" rx="36" ry="72" stroke="rgba(255,255,255,0.1)" stroke-width="1" fill="none"/>
+  <line x1="24" y1="96" x2="168" y2="96" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <!-- Curved journey paths -->
+  <path d="M40 96 Q96 40, 152 96" stroke="url(#accent)" stroke-width="2.5" fill="none" stroke-dasharray="6 6" stroke-linecap="round" opacity="0.7"/>
+  <path d="M48 112 Q96 56, 144 112" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none" stroke-dasharray="4 5"/>
+  <!-- Leaf/journey background shape -->
+  <path d="M96 42 C72 62, 62 80, 96 130 C130 80, 120 62, 96 42Z" fill="rgba(255,255,255,0.08)"/>
+  <!-- Person head -->
+  <circle cx="96" cy="74" r="16" fill="white"/>
+  <!-- Person shoulders/body arc -->
+  <path d="M64 122 Q96 100, 128 122" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- Small decorative dots (stars/locations) -->
+  <circle cx="52" cy="68" r="2.5" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="140" cy="72" r="2" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="60" cy="140" r="2" fill="rgba(255,255,255,0.35)"/>
+  <circle cx="132" cy="138" r="2.5" fill="rgba(255,255,255,0.45)"/>
+  <!-- IC initials at bottom -->
+  <text x="96" y="162" text-anchor="middle" font-family="'Space Grotesk', 'Segoe UI', Arial, sans-serif" font-weight="700" font-size="18" fill="rgba(255,255,255,0.7)" letter-spacing="3">IC</text>
+</svg>

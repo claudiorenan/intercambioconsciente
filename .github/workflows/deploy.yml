@@ -1,0 +1,75 @@
+name: Deploy - Intercâmbio Consciente
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Plataforma/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'Plataforma/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: Plataforma
+        run: npm ci
+
+      - name: Generate config.json
+        run: |
+          cat > Plataforma/config.json << EOF
+          {
+            "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}",
+            "SUPABASE_ANON_KEY": "${{ secrets.SUPABASE_ANON_KEY }}",
+            "SENTRY_DSN": "${{ secrets.SENTRY_DSN }}"
+          }
+          EOF
+
+      - name: Build
+        working-directory: Plataforma
+        run: npm run build
+
+      - name: Copy static assets to dist
+        run: |
+          cp Plataforma/config.json Plataforma/dist/ 2>/dev/null || true
+          cp -r Plataforma/js Plataforma/dist/js 2>/dev/null || true
+          cp Plataforma/sw.js Plataforma/dist/ 2>/dev/null || true
+          cp Plataforma/manifest.json Plataforma/dist/ 2>/dev/null || true
+          cp Plataforma/offline.html Plataforma/dist/ 2>/dev/null || true
+          cp -r Plataforma/icons Plataforma/dist/ 2>/dev/null || true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'Plataforma/dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

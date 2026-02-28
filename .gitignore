@@ -1,0 +1,24 @@
+# Environment variables
+.env
+Plataforma/.env
+!.env.example
+!Plataforma/.env.example
+
+# Config files with secrets
+config.json
+Plataforma/config.json
+
+# Dependencies
+node_modules/
+Plataforma/node_modules/
+
+# Build
+dist/
+Plataforma/dist/
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.log

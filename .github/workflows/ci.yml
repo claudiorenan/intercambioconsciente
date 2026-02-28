@@ -1,0 +1,145 @@
+name: CI - Intercâmbio Consciente
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'Plataforma/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Plataforma/**'
+
+jobs:
+  validate:
+    name: Validate Platform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate HTML
+        uses: nickersoft/html-validator-action@master
+        with:
+          files: 'Plataforma/index.html'
+        continue-on-error: true
+
+      - name: Check for hardcoded secrets
+        run: |
+          echo "Checking for hardcoded Supabase keys..."
+          if grep -r "eyJhbG" Plataforma/js/ --include="*.js" | grep -v "config.json" | grep -v ".env"; then
+            echo "::error::Found hardcoded Supabase key in JS files!"
+            exit 1
+          fi
+          echo "No hardcoded secrets found."
+
+      - name: Validate JSON files
+        run: |
+          echo "Validating manifest.json..."
+          python3 -m json.tool Plataforma/manifest.json > /dev/null
+          echo "manifest.json: valid"
+
+      - name: Check file sizes
+        run: |
+          echo "=== File Size Report ==="
+          echo "--- CSS ---"
+          wc -c Plataforma/styles.css
+          echo "--- JavaScript ---"
+          wc -c Plataforma/js/*.js | sort -n
+          echo "--- Total ---"
+          find Plataforma/ -name "*.js" -o -name "*.css" -o -name "*.html" | xargs wc -c | tail -1
+
+      - name: Validate Service Worker
+        run: |
+          echo "Checking SW cached assets exist..."
+          # Extract asset paths from sw.js and verify they exist
+          grep -oP "'[^']+'" Plataforma/sw.js | tr -d "'" | while read -r asset; do
+            # Skip root path
+            if [ "$asset" = "/" ]; then continue; fi
+            filepath="Plataforma${asset}"
+            if [ ! -f "$filepath" ]; then
+              echo "::warning::SW references $asset but file not found at $filepath"
+            else
+              echo "OK: $asset"
+            fi
+          done
+
+      - name: Check PWA icons exist
+        run: |
+          echo "Checking PWA icons..."
+          for icon in icon-96.svg icon-192.svg icon-512.svg icon-maskable-512.svg; do
+            if [ -f "Plataforma/icons/$icon" ]; then
+              echo "OK: $icon"
+            else
+              echo "::warning::Missing icon: $icon"
+            fi
+          done
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for sensitive files
+        run: |
+          echo "Scanning for sensitive files..."
+          FOUND=0
+          for pattern in ".env" "config.json" "*.key" "*.pem" "credentials*"; do
+            if find . -name "$pattern" -not -path "./.git/*" -not -path "./.env.example" -not -path "*/.env.example" | grep -q .; then
+              echo "::warning::Found potentially sensitive file matching: $pattern"
+              find . -name "$pattern" -not -path "./.git/*" -not -path "./.env.example" -not -path "*/.env.example"
+              FOUND=1
+            fi
+          done
+          if [ $FOUND -eq 0 ]; then
+            echo "No sensitive files found in repo."
+          fi
+
+      - name: Check for eval() usage
+        run: |
+          echo "Checking for eval() usage in JS..."
+          if grep -rn "eval(" Plataforma/js/ --include="*.js"; then
+            echo "::warning::eval() usage found - potential security risk"
+          else
+            echo "No eval() usage found."
+          fi
+
+      - name: Check for innerHTML usage
+        run: |
+          echo "Checking for innerHTML usage..."
+          if grep -rn "innerHTML" Plataforma/js/ --include="*.js"; then
+            echo "::warning::innerHTML usage found - review for XSS safety"
+          else
+            echo "No innerHTML usage found."
+          fi
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'Plataforma/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: Plataforma
+        run: npm ci
+
+      - name: Run tests
+        working-directory: Plataforma
+        run: npm test
+
+      - name: Build check
+        working-directory: Plataforma
+        run: npm run build

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#7C3AED">
+    <title>Sem conexão — Intercâmbio Consciente</title>
+    <style>
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --bg-card: #f8f7fc;
+            --text-primary: #1a1a2e;
+            --text-secondary: #5a6178;
+            --text-muted: #8b8fa3;
+            --purple-start: #7C3AED;
+            --purple-end: #6366F1;
+            --accent: #F43F5E;
+            --accent-end: #EC4899;
+            --border: rgba(124, 58, 237, 0.12);
+            --shadow: 0 4px 24px rgba(124, 58, 237, 0.10);
+            --logo-bg: rgba(124, 58, 237, 0.08);
+            --ring-subtle: rgba(196, 181, 253, 0.18);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f0b1e;
+                --bg-card: #1a1433;
+                --text-primary: #f0edf7;
+                --text-secondary: #b0a8c8;
+                --text-muted: #7a7194;
+                --border: rgba(124, 58, 237, 0.20);
+                --shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
+                --logo-bg: rgba(124, 58, 237, 0.15);
+                --ring-subtle: rgba(196, 181, 253, 0.10);
+            }
+        }
+
+        body {
+            font-family: 'Outfit', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: var(--bg);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 24px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== Container ===== */
+        .offline-container {
+            max-width: 420px;
+            width: 100%;
+        }
+
+        /* ===== Logo ===== */
+        .offline-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 28px;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        .offline-logo svg {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 2px 12px rgba(124, 58, 237, 0.25));
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.88;
+            }
+        }
+
+        /* ===== Brand Name ===== */
+        .offline-brand {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--purple-start), var(--purple-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px;
+        }
+
+        /* ===== Heading ===== */
+        .offline-heading {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        /* ===== Message ===== */
+        .offline-message {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        /* ===== Retry Button ===== */
+        .offline-retry-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, var(--purple-start), var(--purple-end));
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.30);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .offline-retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(124, 58, 237, 0.40);
+        }
+
+        .offline-retry-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.25);
+        }
+
+        .offline-retry-btn:focus-visible {
+            outline: 3px solid var(--purple-start);
+            outline-offset: 3px;
+        }
+
+        .offline-retry-btn svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .offline-retry-btn:hover svg {
+            transform: rotate(180deg);
+        }
+
+        /* ===== Home Link ===== */
+        .offline-home-link {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .offline-home-link:hover,
+        .offline-home-link:focus-visible {
+            color: var(--purple-start);
+        }
+
+        .offline-home-link:focus-visible {
+            outline: 2px solid var(--purple-start);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* ===== Wi-Fi Icon Hint ===== */
+        .offline-wifi-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 28px;
+            color: var(--text-muted);
+        }
+
+        .offline-wifi-icon svg {
+            width: 22px;
+            height: 22px;
+            opacity: 0.6;
+        }
+
+        .offline-wifi-icon span {
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        /* ===== Decorative Background Gradient ===== */
+        .offline-bg-glow {
+            position: fixed;
+            top: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .offline-bg-glow {
+                background: radial-gradient(circle, rgba(124, 58, 237, 0.10) 0%, transparent 70%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Subtle background glow -->
+    <div class="offline-bg-glow" aria-hidden="true"></div>
+
+    <div class="offline-container">
+        <!-- Logo (same SVG as gate modal) -->
+        <div class="offline-logo" aria-hidden="true">
+            <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#7C3AED"/>
+                        <stop offset="100%" style="stop-color:#6366F1"/>
+                    </linearGradient>
+                    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#F43F5E"/>
+                        <stop offset="100%" style="stop-color:#EC4899"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="36" cy="36" r="34" stroke="url(#logoGrad)" stroke-width="2" fill="rgba(124,58,237,0.1)"/>
+                <circle cx="36" cy="36" r="28" stroke="rgba(196,181,253,0.15)" stroke-width="1" fill="none"/>
+                <path d="M36 14 C22 24, 16 36, 36 58 C56 36, 50 24, 36 14Z" fill="url(#logoGrad)" opacity="0.25"/>
+                <circle cx="36" cy="30" r="7" fill="url(#logoGrad)"/>
+                <path d="M24 50 Q36 40, 48 50" stroke="url(#logoGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M16 36 Q36 18, 56 36" stroke="url(#accentGrad)" stroke-width="1.5" fill="none" stroke-dasharray="4 4" stroke-linecap="round"/>
+                <path d="M20 42 Q36 26, 52 42" stroke="rgba(196,181,253,0.3)" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+            </svg>
+        </div>
+
+        <!-- Brand -->
+        <p class="offline-brand">Intercâmbio Consciente</p>
+
+        <!-- Wi-Fi status indicator -->
+        <div class="offline-wifi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="1" y1="1" x2="23" y2="23"/>
+                <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
+                <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
+                <path d="M10.71 5.05A16 16 0 0 1 22.56 9"/>
+                <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                <line x1="12" y1="20" x2="12.01" y2="20"/>
+            </svg>
+            <span>Sem rede detectada</span>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="offline-heading">Sem conexão</h1>
+
+        <!-- Message -->
+        <p class="offline-message">
+            Parece que você está offline. Verifique sua conexão com a internet e tente novamente para continuar sua jornada.
+        </p>
+
+        <!-- Retry Button -->
+        <button class="offline-retry-btn" onclick="location.reload()" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+            Tentar novamente
+        </button>
+
+        <!-- Home Link -->
+        <a href="/" class="offline-home-link">Voltar ao início</a>
+    </div>
+</body>
+</html>

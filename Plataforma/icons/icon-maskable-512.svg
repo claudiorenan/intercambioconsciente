@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F43F5E"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Full background (fills entire canvas for maskable) -->
+  <rect x="0" y="0" width="512" height="512" fill="url(#bg)"/>
+  <!-- Safe zone content: centered within 80% (51.2 to 460.8, i.e. 10% padding = 51.2px each side) -->
+  <!-- All content is within ~51px to ~461px range -->
+  <!-- Globe outer ring -->
+  <circle cx="256" cy="256" r="160" stroke="rgba(255,255,255,0.12)" stroke-width="2" fill="none"/>
+  <!-- Globe meridian curves -->
+  <ellipse cx="256" cy="256" rx="80" ry="160" stroke="rgba(255,255,255,0.09)" stroke-width="1.5" fill="none"/>
+  <ellipse cx="256" cy="256" rx="125" ry="160" stroke="rgba(255,255,255,0.06)" stroke-width="1" fill="none"/>
+  <!-- Globe equator -->
+  <line x1="96" y1="256" x2="416" y2="256" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+  <!-- Latitude lines -->
+  <line x1="120" y1="200" x2="392" y2="200" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="120" y1="312" x2="392" y2="312" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <!-- Curved journey paths -->
+  <path d="M120 256 Q256 120, 392 256" stroke="url(#accent)" stroke-width="3" fill="none" stroke-dasharray="8 7" stroke-linecap="round" opacity="0.7" filter="url(#glow)"/>
+  <path d="M136 290 Q256 162, 376 290" stroke="rgba(255,255,255,0.18)" stroke-width="2" fill="none" stroke-dasharray="5 6"/>
+  <!-- Leaf/journey background shape -->
+  <path d="M256 128 C200 172, 176 212, 256 332 C336 212, 312 172, 256 128Z" fill="rgba(255,255,255,0.07)"/>
+  <!-- Person head -->
+  <circle cx="256" cy="206" r="36" fill="white"/>
+  <!-- Person shoulders/body arc -->
+  <path d="M184 316 Q256 264, 328 316" stroke="white" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- Decorative dots -->
+  <circle cx="152" cy="192" r="3.5" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="360" cy="200" r="3" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="164" cy="360" r="3" fill="rgba(255,255,255,0.35)"/>
+  <circle cx="348" cy="352" r="3.5" fill="rgba(255,255,255,0.45)"/>
+  <!-- Tiny airplane silhouette -->
+  <g transform="translate(340, 168) rotate(35)">
+    <path d="M0 0 L-5 2.5 L-1.5 0 L-5 -2.5 Z" fill="rgba(255,255,255,0.6)"/>
+  </g>
+  <!-- IC initials -->
+  <text x="256" y="404" text-anchor="middle" font-family="'Space Grotesk', 'Segoe UI', Arial, sans-serif" font-weight="700" font-size="38" fill="rgba(255,255,255,0.65)" letter-spacing="6">IC</text>
+</svg>
