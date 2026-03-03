@@ -695,6 +695,10 @@
                     <p class="auth-subtitle">Acesse sua jornada de autoconhecimento</p>
 
                     <form id="authForm" class="auth-form">
+                        <div class="form-group signup-only" style="display:none">
+                            <label for="authName">Nome</label>
+                            <input type="text" id="authName" class="form-input" placeholder="Seu nome" minlength="2">
+                        </div>
                         <div class="form-group">
                             <label for="authEmail">Email</label>
                             <input type="email" id="authEmail" class="form-input" placeholder="seu@email.com" required>
@@ -702,6 +706,10 @@
                         <div class="form-group">
                             <label for="authPassword">Senha</label>
                             <input type="password" id="authPassword" class="form-input" placeholder="Sua senha" required>
+                        </div>
+                        <div class="form-group signup-only" style="display:none">
+                            <label for="authPasswordConfirm">Confirmar senha</label>
+                            <input type="password" id="authPasswordConfirm" class="form-input" placeholder="Repita a senha">
                         </div>
                         <div class="auth-options">
                             <label class="auth-remember">

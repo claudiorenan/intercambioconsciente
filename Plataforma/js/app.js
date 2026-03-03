@@ -243,6 +243,9 @@ const App = {
                 document.querySelector('.auth-subtitle').textContent = isSignUp
                     ? 'Crie sua conta e comece sua jornada'
                     : 'Acesse sua jornada de autoconhecimento';
+                document.querySelectorAll('.signup-only').forEach(el => {
+                    el.style.display = isSignUp ? '' : 'none';
+                });
             });
         }
 
@@ -261,12 +264,21 @@ const App = {
                     return;
                 }
 
+                if (isSignUp) {
+                    const confirm = document.getElementById('authPasswordConfirm')?.value;
+                    if (password !== confirm) {
+                        ErrorHandler.showToast('As senhas não coincidem', 'warning');
+                        return;
+                    }
+                }
+
                 const btn = document.getElementById('authSubmitBtn');
                 btn.disabled = true;
                 btn.textContent = 'Aguarde...';
 
+                const name = isSignUp ? (document.getElementById('authName')?.value.trim() || '') : '';
                 const result = isSignUp
-                    ? await Auth.signUp(email, password, { profile_type: localStorage.getItem('ic_profile') || 'intercambista' })
+                    ? await Auth.signUp(email, password, { name, profile_type: localStorage.getItem('ic_profile') || 'intercambista' })
                     : await Auth.signIn(email, password);
 
                 btn.disabled = false;
@@ -282,7 +294,7 @@ const App = {
                         localStorage.removeItem('ic_remember_email');
                     }
                     if (isSignUp) {
-                        ErrorHandler.showToast('Conta criada! Verifique seu email.', 'success');
+                        ErrorHandler.showToast('Conta criada com sucesso! Bem-vindo(a)!', 'success');
                     }
                     this._switchTab('tabJornadaContent');
                 }

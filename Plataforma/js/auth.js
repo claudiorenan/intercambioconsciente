@@ -70,7 +70,7 @@ const Auth = {
         if (!sb) return { error: { message: 'Supabase não configurado' } };
 
         const { data, error } = await sb.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin,
+            redirectTo: window.location.href.split('#')[0],
         });
         return { data, error };
     },
